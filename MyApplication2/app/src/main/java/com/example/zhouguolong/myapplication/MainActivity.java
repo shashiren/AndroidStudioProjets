@@ -1,25 +1,31 @@
 package com.example.zhouguolong.myapplication;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
     public Button btn1;
+    public Button button1;
+    public Button button2;
     private ListView lv;
     private MyAdapter adapter;
     public TextView tv1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +36,27 @@ public class MainActivity extends AppCompatActivity {
         lv = (ListView) findViewById(R.id.lv);
         adapter = new MyAdapter(GetNumber.lists, this);
         lv.setAdapter(adapter);
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                showDialog();
+            }
+        });
+        btn1.findViewById(R.id.btn1).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        button1.findViewById(R.id .button1).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                callphone(GetNumber.getNumber());
+            }
+        });
+
+
+
 
 
 //        System.out.println("hello world!");
@@ -41,6 +68,29 @@ public class MainActivity extends AppCompatActivity {
 //              tv1.setText("你好MacBook第一个程序");
 //            }
 //        });
+    }
+    public void showDialog(){
+        View view = getLayoutInflater().inflate(R.layout.call_phone,null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setTitle("联系人");
+        builder.setView(view);
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        builder.show();
+    }
+
+    private void callphone(String phoneNumber){
+        Uri uri = Uri.parse("tel:"+phoneNumber);
+        Intent intent = new Intent(Intent.ACTION_CALL,uri);
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE)==PackageManager.PERMISSION_GRANTED){
+            startActivity(intent);
+        }
+
     }
 
     public void getPermisson(){
