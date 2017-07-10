@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">My Application</string>
+    <string name="tianjia">添加</string>
+    <string name="打电话">打电话</string>
 </resources>

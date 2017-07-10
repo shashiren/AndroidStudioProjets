@@ -34,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
         getPermisson();
 //        GetNumber.getNumber(this);
         lv = (ListView) findViewById(R.id.lv);
+        btn1 = (Button) findViewById(R.id.btn1);
+//        button1 = (Button) findViewById(R.id.button1);
         adapter = new MyAdapter(GetNumber.lists, this);
         lv.setAdapter(adapter);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -42,18 +44,20 @@ public class MainActivity extends AppCompatActivity {
                 showDialog();
             }
         });
-        btn1.findViewById(R.id.btn1).setOnClickListener(new View.OnClickListener() {
+        btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                System.out.println("添加");
 
             }
         });
-        button1.findViewById(R.id .button1).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                callphone(GetNumber.getNumber());
-            }
-        });
+//        button1.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                System.out.println("打电话");
+//                callphone(PhoneInfo.class.getName());
+//            }
+//        });
 
 
 
@@ -81,15 +85,26 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         builder.show();
+        button1 = (Button) view.findViewById(R.id.button1);
+        button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("打电话");
+                callphone(GetNumber.getNumber());
+            }
+        });
+
     }
 
     private void callphone(String phoneNumber){
+
         Uri uri = Uri.parse("tel:"+phoneNumber);
         Intent intent = new Intent(Intent.ACTION_CALL,uri);
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE)==PackageManager.PERMISSION_GRANTED){
             startActivity(intent);
         }
+
 
     }
 
