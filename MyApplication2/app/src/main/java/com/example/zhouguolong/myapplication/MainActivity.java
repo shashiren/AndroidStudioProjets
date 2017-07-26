@@ -18,6 +18,8 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import static com.example.zhouguolong.myapplication.GetNumber.lists;
+
 public class MainActivity extends AppCompatActivity {
     public Button btn1;
     public Button button1;
@@ -25,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private ListView lv;
     private MyAdapter adapter;
     public TextView tv1;
+    public String number;
 
 
     @Override
@@ -36,12 +39,14 @@ public class MainActivity extends AppCompatActivity {
         lv = (ListView) findViewById(R.id.lv);
         btn1 = (Button) findViewById(R.id.btn1);
 //        button1 = (Button) findViewById(R.id.button1);
-        adapter = new MyAdapter(GetNumber.lists, this);
+        adapter = new MyAdapter(lists, this);
         lv.setAdapter(adapter);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                number = lists.get(position).getNumber();
                 showDialog();
+
             }
         });
         btn1.setOnClickListener(new View.OnClickListener() {
@@ -86,15 +91,24 @@ public class MainActivity extends AppCompatActivity {
         });
         builder.show();
         button1 = (Button) view.findViewById(R.id.button1);
+        button2 = (Button) view.findViewById(R.id.button2);
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 System.out.println("打电话");
-                callphone(GetNumber.getNumber());
+                callphone(number);
+            }
+        });
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendMessage(number);
             }
         });
 
-    }
+    };
+
+
 
     private void callphone(String phoneNumber){
 
@@ -105,6 +119,16 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         }
 
+
+    }
+    private void sendMessage(String phoneNumber){
+
+        Uri uri = Uri.parse("sms:"+phoneNumber);
+        Intent intent = new Intent(Intent.ACTION_VIEW,uri);
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS)==PackageManager.PERMISSION_GRANTED){
+            startActivity(intent);
+        }
 
     }
 
