@@ -3,4 +3,6 @@
     <string name="call">打电话</string>
     <string name="contacts">联系人</string>
     <string name="cancel">取消</string>
+    <string name="call1">打电话</string>
+    <string name="sendMessage">发信息</string>
 </resources>

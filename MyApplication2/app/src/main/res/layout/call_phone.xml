@@ -8,13 +8,13 @@
         android:id="@+id/button1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/打电话"
+        android:text="@string/call1"
         />
 
     <Button
         android:id="@+id/button2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="发信息"
+        android:text="@string/sendMessage"
         tools:ignore="HardcodedText" />
 </LinearLayout>

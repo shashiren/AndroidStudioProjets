@@ -1,6 +1,7 @@
 package com.example.zhouguolong.myapplication;
 
 import android.Manifest;
+import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -81,9 +82,9 @@ public class MainActivity extends AppCompatActivity {
     public void showDialog(){
         View view = getLayoutInflater().inflate(R.layout.call_phone,null);
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        builder.setTitle("联系人");
+        builder.setTitle(R.string.contacts);
         builder.setView(view);
-        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
@@ -95,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("打电话");
+                System.out.println(getString(R.string.call));
                 callphone(number);
             }
         });
@@ -109,6 +110,10 @@ public class MainActivity extends AppCompatActivity {
     };
 
 
+    public void addNumber(){
+        Uri uri = Uri.parse("content://com.android.contacts/raw_contacts");
+        ContentResolver resolver = getContext().getContentResolver();
+    }
 
     private void callphone(String phoneNumber){
 
