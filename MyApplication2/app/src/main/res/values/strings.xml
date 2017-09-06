@@ -2,4 +2,7 @@
     <string name="app_name">My Application</string>
     <string name="tianjia">添加</string>
     <string name="打电话">打电话</string>
+    <string name="call">打电话</string>
+    <string name="contacts">联系人</string>
+    <string name="cancel">取消</string>
 </resources>
