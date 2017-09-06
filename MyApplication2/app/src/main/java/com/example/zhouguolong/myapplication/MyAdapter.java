@@ -1,8 +1,6 @@
 package com.example.zhouguolong.myapplication;
 
 
-import java.util.List;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,30 +9,32 @@ import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.List;
+
 
 /**
  * Created by zhouguolong on 2017/5/3.
  */
 
 public class MyAdapter extends BaseAdapter {
-    private List<PhoneInfo> lists;
+    private List<PhoneInfo> contacts;
     private Context context;
     private LinearLayout layout;
 
-    public MyAdapter(List<PhoneInfo> lists, Context context) {
-        this.lists = lists;
+    public MyAdapter(Context context, List<PhoneInfo> contacts) {
+        this.contacts = contacts;
         this.context = context;
 
     }
 
     @Override
     public int getCount() {
-        return lists.size();
+        return contacts.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return lists.get(position);
+        return contacts.get(position);
     }
 
     @Override
@@ -56,13 +56,13 @@ public class MyAdapter extends BaseAdapter {
             holder = new ViewHolder();
             holder.nametv = (TextView) convertView.findViewById(R.id.name);
             holder.numbertv = (TextView) convertView.findViewById(R.id.number);
-            holder.nametv.setText(lists.get(position).getName());
-            holder.numbertv.setText(lists.get(position).getNumber());
+            holder.nametv.setText(contacts.get(position).getName());
+            holder.numbertv.setText(contacts.get(position).getNumber());
             convertView.setTag(holder);
         }else{
             holder = (ViewHolder) convertView.getTag();
-            holder.nametv.setText(lists.get(position).getName());
-            holder.numbertv.setText(lists.get(position).getNumber());
+            holder.nametv.setText(contacts.get(position).getName());
+            holder.numbertv.setText(contacts.get(position).getNumber());
         }
         return convertView;
     }

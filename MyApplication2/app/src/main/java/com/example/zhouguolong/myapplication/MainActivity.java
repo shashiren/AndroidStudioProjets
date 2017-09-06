@@ -6,19 +6,21 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import static com.example.zhouguolong.myapplication.GetNumber.lists;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     public Button btn1;
@@ -28,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private MyAdapter adapter;
     public TextView tv1;
     public String number;
+    private List<PhoneInfo> contacts = new ArrayList<PhoneInfo>();
 
 
     @Override
@@ -35,55 +38,113 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getPermisson();
-//        GetNumber.getNumber(this);
+//        ContactManager.getContact(this,);
         lv = (ListView) findViewById(R.id.lv);
         btn1 = (Button) findViewById(R.id.btn1);
 //        button1 = (Button) findViewById(R.id.button1);
-        adapter = new MyAdapter(lists, this);
+        adapter = new MyAdapter(this,contacts);
         lv.setAdapter(adapter);
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                number = lists.get(position).getNumber();
-                showDialog();
 
-            }
-        });
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                showAddDialog();
+                setContactData();
                 System.out.println("添加");
+
+                }
+        });
+
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                PhoneInfo contact = (PhoneInfo) adapter.getItem(position);
+//                number = contacts.get(position).getNumber();
+                showCallDialog(contact);
+                setContactData();
 
             }
         });
-//        button1.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                System.out.println("打电话");
-//                callphone(PhoneInfo.class.getName());
-//            }
-//        });
 
+        lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
+                PhoneInfo contact = (PhoneInfo) adapter.getItem(position);
+                ContactManager.deleteContact(MainActivity.this,contact);
 
+                setContactData();
+                return true;
+            }
+        });
 
+        setContactData();
 
-//        System.out.println("hello world!");
-//        btn1 = (Button) findViewById(R.id.button);
-//        tv1 = (TextView) findViewById(R.id.tv1);
-//        btn1.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//              tv1.setText("你好MacBook第一个程序");
-//            }
-//        });
     }
-    public void showDialog(){
+    private void setContactData(){
+        List<PhoneInfo> contactData = ContactManager.getContact(this);
+        contacts.clear();
+        contacts.addAll(contactData);
+        adapter.notifyDataSetChanged();
+    }
+    public void showAddDialog(){
+        View view = getLayoutInflater().inflate(R.layout.addcontact,null);
+        final EditText et_name = (EditText) view.findViewById(R.id.et_name);
+        final EditText et_phone = (EditText) view.findViewById(R.id.et_phone);
+        new AlertDialog.Builder(this)
+                .setTitle("添加联系人")
+                .setView(view)
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        PhoneInfo contact = new PhoneInfo();
+                        contact.setName(et_name.getText()+"");
+                        contact.setNumber(et_phone.getText()+"");
+
+                        ContactManager.addContact(MainActivity.this,contact);
+                        setContactData();
+
+                    }
+                })
+                .setNegativeButton("取消",null)
+                .show();
+
+    }
+    public void showUpdateDialog(final PhoneInfo oldContact){
+        View view = getLayoutInflater().inflate(R.layout.addcontact,null);
+        final EditText et_name = (EditText) view.findViewById(R.id.et_name);
+        final EditText et_phone = (EditText) view.findViewById(R.id.et_phone);
+
+        et_name.setText(oldContact.getName());
+        et_phone.setText(oldContact.getNumber());
+        new AlertDialog.Builder(this)
+                .setTitle("修改联系人")
+                .setView(view)
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        PhoneInfo contact = new PhoneInfo();
+                        contact.setRawContactId(oldContact.getRawContactId());
+                        contact.setName(et_name.getText()+"");
+                        contact.setNumber(et_phone.getText()+"");
+
+                        ContactManager.updateContct(MainActivity.this,contact);
+                        setContactData();
+
+                    }
+                })
+                .setNegativeButton("取消",null)
+                .show();
+
+    }
+
+
+    public void showCallDialog(final PhoneInfo contact){
         View view = getLayoutInflater().inflate(R.layout.call_phone,null);
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        builder.setTitle("联系人");
+        builder.setTitle(R.string.contacts);
         builder.setView(view);
-        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
@@ -95,22 +156,21 @@ public class MainActivity extends AppCompatActivity {
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("打电话");
-                callphone(number);
+                System.out.println(getString(R.string.call));
+                callphone(contact);
             }
         });
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendMessage(number);
+                sendMessage(contact);
             }
         });
 
     };
 
 
-
-    private void callphone(String phoneNumber){
+    private void callphone(PhoneInfo phoneNumber){
 
         Uri uri = Uri.parse("tel:"+phoneNumber);
         Intent intent = new Intent(Intent.ACTION_CALL,uri);
@@ -121,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-    private void sendMessage(String phoneNumber){
+    private void sendMessage(PhoneInfo phoneNumber){
 
         Uri uri = Uri.parse("sms:"+phoneNumber);
         Intent intent = new Intent(Intent.ACTION_VIEW,uri);
@@ -135,7 +195,7 @@ public class MainActivity extends AppCompatActivity {
     public void getPermisson(){
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
             if (ContextCompat.checkSelfPermission(MainActivity.this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)== PackageManager.PERMISSION_GRANTED){
-                GetNumber.getNumber(this);
+//                ContactManager.getNumber(this);
             }else {
 //                        ActivityCompat.requestPermissions(MainActivity.this,new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.});
                 AlertDialog.Builder builder1 = new AlertDialog.Builder(MainActivity.this);
@@ -156,7 +216,7 @@ public class MainActivity extends AppCompatActivity {
                 builder1.show();
             }
         }else {
-            GetNumber.getNumber(this);
+//            ContactManager.getNumber(this);
         }
     }
 

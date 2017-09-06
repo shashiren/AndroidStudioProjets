@@ -1,8 +1,14 @@
 <resources>
     <string name="app_name">My Application</string>
     <string name="tianjia">添加</string>
-    <string name="打电话">打电话</string>
     <string name="call">打电话</string>
     <string name="contacts">联系人</string>
     <string name="cancel">取消</string>
+    <string name="call1">打电话</string>
+    <string name="sendMessage">发信息</string>
+    <string name="Add">添加</string>
+    <string name="textview">Name</string>
+    <string name="textview1">Number</string>
+    <string name="contactNumber">号码</string>
+    <string name="contactName">姓名</string>
 </resources>

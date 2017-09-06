@@ -7,6 +7,20 @@ package com.example.zhouguolong.myapplication;
 public class PhoneInfo {
     private String name;
     private String number;
+    private long rawContactId;
+
+    public PhoneInfo() {
+
+    }
+
+
+    public long getRawContactId() {
+        return rawContactId;
+    }
+
+    public void setRawContactId(long rawContactId) {
+        this.rawContactId = rawContactId;
+    }
 
     public PhoneInfo(String name,String number) {
         setNumber(number);
