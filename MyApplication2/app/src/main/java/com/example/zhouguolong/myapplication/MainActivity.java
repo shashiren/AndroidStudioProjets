@@ -26,10 +26,10 @@ public class MainActivity extends AppCompatActivity {
     public Button btn1;
     public Button button1;
     public Button button2;
-    private ListView lv;
-    private MyAdapter adapter;
     public TextView tv1;
     public String number;
+    private ListView lv;
+    private MyAdapter adapter;
     private List<PhoneInfo> contacts = new ArrayList<PhoneInfo>();
 
 
@@ -92,9 +92,9 @@ public class MainActivity extends AppCompatActivity {
         final EditText et_name = (EditText) view.findViewById(R.id.et_name);
         final EditText et_phone = (EditText) view.findViewById(R.id.et_phone);
         new AlertDialog.Builder(this)
-                .setTitle("添加联系人")
+                .setTitle(R.string.addcontact)
                 .setView(view)
-                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         PhoneInfo contact = new PhoneInfo();
@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                 })
-                .setNegativeButton("取消",null)
+                .setNegativeButton(R.string.Cancel, null)
                 .show();
 
     }

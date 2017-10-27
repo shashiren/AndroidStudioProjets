@@ -2,7 +2,7 @@
 <resources>
     <string name="call">call</string>
     <string name="contacts">contacts</string>
-    <string name="cancel">cancel</string>
+ <string name="cancel">取消</string>
     <string name="tianjia">Add</string>
     <string name="call1">call</string>
     <string name="sendMessage">sendMessage</string>
@@ -11,5 +11,8 @@
     <string name="textview1">Number</string>
     <string name="contactNumber">号码</string>
     <string name="contactName">姓名</string>
+ <string name="addcontact">添加联系人</string>
+ <string name="OK">确定</string>
+ <string name="Cancel">取消</string>
 
 </resources>
