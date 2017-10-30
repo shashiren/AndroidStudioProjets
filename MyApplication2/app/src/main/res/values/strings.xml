@@ -7,8 +7,8 @@
     <string name="call1">打电话</string>
     <string name="sendMessage">发信息</string>
     <string name="Add">添加</string>
-    <string name="textview">Name</string>
-    <string name="textview1">Number</string>
+    <string name="textview">姓名</string>
+    <string name="textview1">号码</string>
     <string name="contactNumber">号码</string>
     <string name="contactName">姓名</string>
     <string name="addcontact">添加联系人</string>

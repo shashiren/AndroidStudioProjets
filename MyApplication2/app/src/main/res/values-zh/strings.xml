@@ -9,4 +9,10 @@
     <string name="addcontact">添加联系人</string>
     <string name="OK">确定</string>
     <string name="Cancel">取消</string>
+    <string name="Add">添加</string>
+    <string name="cancel">取消</string>
+    <string name="app_name">通讯录</string>
+    <string name="textview">姓名</string>
+    <string name="textview1">号码</string>
+    <string name="tianjia">添加</string>
 </resources>
