@@ -32,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
     private MyAdapter adapter;
     private List<PhoneInfo> contacts = new ArrayList<PhoneInfo>();
 
+//    测试创建分支
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-    };
+    }
 
 
     private void callphone(PhoneInfo phoneNumber){
