@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.os.RemoteException;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, ServiceConnection {
 
     private AppService.Binder binder = null;
+    private IAppServiceRemoteBinder binder1 = null;
     private TextView tvOut;
 
 
@@ -36,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onDestroy() {
         super.onDestroy();
 
-
+        callUnRegistBinder();
     }
 
     @Override
@@ -56,31 +58,73 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
 
-        binder = (AppService.Binder) iBinder;
-        binder.gteService().setCallback(new AppService.Callback() {
-            @Override
-            public void onDataChange(String data) {
-                Message msg = new Message();
-                Bundle bundle = new Bundle();
-                bundle.putString("data",data);
-                msg.setData(bundle);
-                handler.sendMessage(msg);
-            }
-        });
+//        binder = (AppService.Binder) iBinder;
+        binder1 = IAppServiceRemoteBinder.Stub.asInterface(iBinder);
+//        binder.gteService().setCallback(new AppService.Callback() {
+//            @Override
+//            public void onDataChange(String numIndex) {
+//                Message msg = new Message();
+//                Bundle bundle = new Bundle();
+//                bundle.putString("numIndex",numIndex);
+//                msg.setData(bundle);
+//                handler.sendMessage(msg);
+//            }
+//        });
+        try {
+            binder1.registCallback(onServiceCallback);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
 
     }
 
     @Override
     public void onServiceDisconnected(ComponentName componentName) {
 
+        callUnRegistBinder();
     }
 
-    private Handler handler = new Handler(){
+
+
+    private void callUnRegistBinder(){
+        try {
+            binder1.unRegistCallback(onServiceCallback);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private TimerServiceCallback onServiceCallback = new TimerServiceCallback.Stub() {
+        @Override
+        public void onTimer(int numIndex) throws RemoteException {
+
+            Message msg = new Message();
+            msg.obj = MainActivity.this;
+            msg.arg1 = numIndex;
+            hander.sendMessage(msg);
+
+        }
+    };
+
+    private final MyHander hander = new MyHander();
+
+    private class MyHander extends Handler{
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
 
-            tvOut.setText(msg.getData().getString("data"));
+            int index = msg.arg1;
+            MainActivity _this = (MainActivity) msg.obj;
+            _this.tvOut.setText(index);
         }
-    };
+    }
+
+//    private Handler handler = new Handler(){
+//        @Override
+//        public void handleMessage(Message msg) {
+//            super.handleMessage(msg);
+//
+//            tvOut.setText(msg.getData().getString("numIndex"));
+//        }
+//    };
 }

@@ -3,11 +3,15 @@ package com.jiekexueyuan.server;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
+import android.os.RemoteCallbackList;
+import android.os.RemoteException;
 
 public class AppService extends Service {
 
     private boolean running = false;
-    private String data = null;
+    private String data = "默认数据";
+    private int numIndex = 0;
+    private RemoteCallbackList<TimerServiceCallback> callbackList = new RemoteCallbackList<>();
 
 
     public AppService() {
@@ -17,7 +21,25 @@ public class AppService extends Service {
     @Override
     public IBinder onBind(Intent intent) {
 
-        return new Binder();
+        return new IAppServiceRemoteBinder.Stub() {
+
+            @Override
+            public void setData(String data) throws RemoteException {
+
+            }
+
+            @Override
+            public void registCallback(TimerServiceCallback callback) throws RemoteException {
+
+                callbackList.register(callback);
+            }
+
+            @Override
+            public void unRegistCallback(TimerServiceCallback callback) throws RemoteException {
+
+                callbackList.unregister(callback);
+            }
+        };
     }
 
     public class Binder extends android.os.Binder{
@@ -33,30 +55,52 @@ public class AppService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-
-        running = true;
         new Thread(){
             @Override
             public void run() {
                 super.run();
+                running = true;
 
-                int i = 0;
-                while (running){
+                for (numIndex = 0;running;numIndex++) {
 
-                    i++;
+                    int count = callbackList.beginBroadcast();
 
-                    String str = i+":"+data;
-                    System.out.println(str);
-
-                    if (callback!=null){
-                        callback.onDataChange(str);
-                    }
+                    while (count-- > 0) {
                         try {
-                        sleep(1000);
+                            callbackList.getBroadcastItem(count).onTimer(numIndex);
+                        } catch (RemoteException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+
+                    callbackList.finishBroadcast();
+
+
+                    try {
+                        Thread.sleep(1000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                 }
+
+//                int i = 0;
+//                while (running){
+//
+//                    i++;
+//
+//                    String str = i+":"+data;
+//                    System.out.println(str);
+//
+//                    if (callback!=null){
+//                        callback.onDataChange(str);
+//                    }
+//                        try {
+//                        sleep(1000);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
 
             }
         }.start();
