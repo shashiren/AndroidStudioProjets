@@ -47,7 +47,7 @@ public class AppService extends Service {
         public void setData(String data){
             AppService.this.data = data ;
         }
-        public AppService gteService(){
+        public AppService getService(){
             return AppService.this;
         }
     }

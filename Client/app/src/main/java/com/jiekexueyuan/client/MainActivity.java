@@ -89,21 +89,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Message msg = new Message();
             msg.obj = MainActivity.this;
             msg.arg1 = numIndex;
-            hander.sendMessage(msg);
+            handler.sendMessage(msg);
 
         }
     };
 
-    private final MyHander hander = new MyHander();
+    private final Myhandler handler = new Myhandler();
 
-    private class MyHander extends Handler{
+    private class Myhandler extends Handler{
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
 
             int index = msg.arg1;
             MainActivity _this = (MainActivity) msg.obj;
-            _this.tvCallback.setText(index);
+            _this.tvCallback.setText("回调数据"+index);
         }
     }
 

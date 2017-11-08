@@ -34,12 +34,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        callUnRegistBinder();
-    }
 
     @Override
     public void onClick(View view) {
@@ -57,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+
 
 //        binder = (AppService.Binder) iBinder;
         binder1 = IAppServiceRemoteBinder.Stub.asInterface(iBinder);
@@ -76,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             e.printStackTrace();
         }
 
+        System.out.println("bindservice");
     }
 
     @Override
@@ -84,6 +80,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         callUnRegistBinder();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        callUnRegistBinder();
+    }
 
 
     private void callUnRegistBinder(){
@@ -101,21 +103,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Message msg = new Message();
             msg.obj = MainActivity.this;
             msg.arg1 = numIndex;
-            hander.sendMessage(msg);
+            handler.sendMessage(msg);
 
         }
     };
 
-    private final MyHander hander = new MyHander();
+    private final MyHandler handler = new MyHandler();
 
-    private class MyHander extends Handler{
+    private class MyHandler extends Handler{
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
 
             int index = msg.arg1;
             MainActivity _this = (MainActivity) msg.obj;
-            _this.tvOut.setText(index);
+            _this.tvOut.setText("回调数据"+index);
         }
     }
 
