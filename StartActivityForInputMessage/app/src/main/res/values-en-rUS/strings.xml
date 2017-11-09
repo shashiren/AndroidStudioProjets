@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">StartActivityForInputMessage</string>
+    <string name="str">Without input desire, please input your wish</string>
+    <string name="str1">"What's your wish today: "</string>
+</resources>
