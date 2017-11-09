@@ -17,7 +17,6 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,13 +25,11 @@ public class MainActivity extends AppCompatActivity {
     public Button btn1;
     public Button button1;
     public Button button2;
-    public TextView tv1;
-    public String number;
+//    public TextView tv1;
     private ListView lv;
     private MyAdapter adapter;
     private List<PhoneInfo> contacts = new ArrayList<PhoneInfo>();
 
-//    测试创建分支
 
 
     @Override
@@ -40,10 +37,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getPermisson();
-//        ContactManager.getContact(this,);
         lv = (ListView) findViewById(R.id.lv);
         btn1 = (Button) findViewById(R.id.btn1);
-//        button1 = (Button) findViewById(R.id.button1);
         adapter = new MyAdapter(this,contacts);
         lv.setAdapter(adapter);
 
@@ -61,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 PhoneInfo contact = (PhoneInfo) adapter.getItem(position);
-//                number = contacts.get(position).getNumber();
                 showCallDialog(contact);
                 setContactData();
 
@@ -197,9 +191,8 @@ public class MainActivity extends AppCompatActivity {
     public void getPermisson(){
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
             if (ContextCompat.checkSelfPermission(MainActivity.this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)== PackageManager.PERMISSION_GRANTED){
-//                ContactManager.getNumber(this);
+
             }else {
-//                        ActivityCompat.requestPermissions(MainActivity.this,new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.});
                 AlertDialog.Builder builder1 = new AlertDialog.Builder(MainActivity.this);
                 builder1.setTitle("注意!");
                 builder1.setMessage("请设置输入权限");
@@ -218,7 +211,7 @@ public class MainActivity extends AppCompatActivity {
                 builder1.show();
             }
         }else {
-//            ContactManager.getNumber(this);
+
         }
     }
 

@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, ServiceConnection {
 
-    private AppService.Binder binder = null;
     private IAppServiceRemoteBinder binder1 = null;
     private TextView tvOut;
 
@@ -34,7 +33,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-
     @Override
     public void onClick(View view) {
         switch (view.getId()){
@@ -52,19 +50,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
 
-
-//        binder = (AppService.Binder) iBinder;
         binder1 = IAppServiceRemoteBinder.Stub.asInterface(iBinder);
-//        binder.gteService().setCallback(new AppService.Callback() {
-//            @Override
-//            public void onDataChange(String numIndex) {
-//                Message msg = new Message();
-//                Bundle bundle = new Bundle();
-//                bundle.putString("numIndex",numIndex);
-//                msg.setData(bundle);
-//                handler.sendMessage(msg);
-//            }
-//        });
         try {
             binder1.registCallback(onServiceCallback);
         } catch (RemoteException e) {
@@ -117,16 +103,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             int index = msg.arg1;
             MainActivity _this = (MainActivity) msg.obj;
-            _this.tvOut.setText("回调数据"+index);
+            _this.tvOut.setText("回调数据:"+index);
         }
     }
 
-//    private Handler handler = new Handler(){
-//        @Override
-//        public void handleMessage(Message msg) {
-//            super.handleMessage(msg);
-//
-//            tvOut.setText(msg.getData().getString("numIndex"));
-//        }
-//    };
 }

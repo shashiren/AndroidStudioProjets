@@ -27,7 +27,6 @@ import static android.R.attr.accountType;
 
 //    #获取联系人方法#
 public class ContactManager {
-//    public static List<PhoneInfo> lists = new ArrayList<PhoneInfo>();
 
     public static List<PhoneInfo> getContact(Context context) {
 
@@ -72,17 +71,6 @@ public class ContactManager {
         cursor.close();
         return contacts;
 
-
-//        String phoneNumber;
-//        String phoneName;
-//        while (cursor.moveToNext()) {
-//            phoneNumber = cursor.getString(cursor.getColumnIndex(Phone.NUMBER));
-//            phoneName = cursor.getString(cursor.getColumnIndex(Phone.DISPLAY_NAME));
-//            phoneInfo = new PhoneInfo(phoneName, phoneNumber);
-//            lists.add(phoneInfo);
-//            System.out.println(phoneName+phoneNumber);
-//        }
-//        return lists;
     }
 
 //    # 添加联系人方法 #

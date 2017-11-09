@@ -1,5 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Client</string>
+    <string name="app_name">客户端</string>
     <string name="bindRemoteService">绑定外部服务</string>
     <string name="unBindRemoteService">解除绑定外部服务</string>
 </resources>

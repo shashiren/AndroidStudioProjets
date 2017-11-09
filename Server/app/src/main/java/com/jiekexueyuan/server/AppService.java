@@ -9,7 +9,6 @@ import android.os.RemoteException;
 public class AppService extends Service {
 
     private boolean running = false;
-    private String data = "默认数据";
     private int numIndex = 0;
     private RemoteCallbackList<TimerServiceCallback> callbackList = new RemoteCallbackList<>();
 
@@ -42,16 +41,6 @@ public class AppService extends Service {
         };
     }
 
-    public class Binder extends android.os.Binder{
-
-        public void setData(String data){
-            AppService.this.data = data ;
-        }
-        public AppService getService(){
-            return AppService.this;
-        }
-    }
-
     @Override
     public void onCreate() {
         super.onCreate();
@@ -73,9 +62,7 @@ public class AppService extends Service {
                         }
                     }
 
-
                     callbackList.finishBroadcast();
-
 
                     try {
                         Thread.sleep(1000);
@@ -83,24 +70,6 @@ public class AppService extends Service {
                         e.printStackTrace();
                     }
                 }
-
-//                int i = 0;
-//                while (running){
-//
-//                    i++;
-//
-//                    String str = i+":"+data;
-//                    System.out.println(str);
-//
-//                    if (callback!=null){
-//                        callback.onDataChange(str);
-//                    }
-//                        try {
-//                        sleep(1000);
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
 
             }
         }.start();
@@ -113,18 +82,4 @@ public class AppService extends Service {
         System.out.println("Service destoryed");
     }
 
-    private Callback callback = null;
-
-    public void setCallback(Callback callback) {
-        this.callback = callback;
-    }
-
-    public Callback getCallback() {
-        return callback;
-    }
-
-    public static interface Callback{
-
-        void onDataChange(String data);
-    }
 }

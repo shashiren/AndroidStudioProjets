@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -19,7 +18,6 @@ import java.util.List;
 public class MyAdapter extends BaseAdapter {
     private List<PhoneInfo> contacts;
     private Context context;
-    private LinearLayout layout;
 
     public MyAdapter(Context context, List<PhoneInfo> contacts) {
         this.contacts = contacts;
@@ -44,12 +42,7 @@ public class MyAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-//		LayoutInflater inflater = LayoutInflater.from(context);
-//		layout = (LinearLayout) inflater.inflate(R.layout.call, null);
-//		TextView nametv = (TextView) layout.findViewById(R.id.name);
-//		TextView numbertv = (TextView) layout.findViewById(R.id.number);
-//		nametv.setText(lists.get(position).getName());
-//		numbertv.setText(lists.get(position).getNumber());
+
         ViewHolder holder;
         if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(R.layout.call, null);
