@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">StartActivityForInputMessage</string>
+    <string name="str1">你今天的愿望是:</string>
+    <string name="str">没有输入愿望,请输入你的愿望</string>
+</resources>
