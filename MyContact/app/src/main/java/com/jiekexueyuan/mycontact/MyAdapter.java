@@ -1,5 +1,8 @@
-package com.example.zhouguolong.myapplication;
+package com.jiekexueyuan.mycontact;
 
+/**
+ * Created by stan on 2017/11/9.
+ */
 
 import android.content.Context;
 import android.view.LayoutInflater;
