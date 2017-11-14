@@ -28,5 +28,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         Intent messageInput = new Intent(MainActivity.this,MessageInputActivity.class);
         startActivity(messageInput);
+        finish();
     }
 }

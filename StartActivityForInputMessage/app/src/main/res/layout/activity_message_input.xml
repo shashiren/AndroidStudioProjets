@@ -55,7 +55,7 @@
         android:ems="10"
         android:gravity="top|left"
         android:inputType="textPersonName"
-        android:text="说出你今天的愿望"
+        android:hint="说出你今天的愿望"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintBottom_toTopOf="@+id/btn1"
         app:layout_constraintEnd_toEndOf="parent"
