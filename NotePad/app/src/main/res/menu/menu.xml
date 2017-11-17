@@ -5,10 +5,7 @@
 
     <item
         android:id="@+id/media_route_menu_item"
-        android:title="Cast"
+        android:title="添加事件"
         app:actionProviderClass="android.support.v7.app.MediaRouteActionProvider"
-        tools:icon="@drawable/mr_button_light" >
-        <item android:title="添加事件"
-            />
-    </item>
+        tools:icon="@drawable/mr_button_light" ></item>
 </menu>
