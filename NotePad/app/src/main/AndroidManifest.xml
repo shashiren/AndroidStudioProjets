@@ -18,20 +18,21 @@
             </intent-filter>
         </activity>
          <activity
-         android:name="com.jiekexueyuan.notepad.MainActivity"
+         android:name=".TopBarActivity"
          android:label="@string/mr_button_content_description"
-         android:parentActivityName="com.jiekexueyuan.notepad.MainActivity"
-         tools:ignore="DuplicateActivity">
+         android:parentActivityName=".MainActivity"
+         >
 
 
          <!-- Parent activity meta-data to support 4.0 and lower -->
          <meta-data
          android:name="android.support.PARENT_ACTIVITY"
-         android:value="com.jiekexueyuan.notepad.MainActivity" />
+         android:value=".MainActivity" />
          </activity>
 
         <activity android:name=".AddNote" />
-        <activity android:name=".TopBarActivity"></activity>
+        <!---->
+        <!--<activity android:name=".TopBarActivity"></activity>-->
     </application>
 
 </manifest>

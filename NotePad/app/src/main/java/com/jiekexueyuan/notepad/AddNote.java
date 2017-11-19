@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SimpleCursorAdapter;
+import android.widget.Toast;
 
 public class AddNote extends AppCompatActivity implements View.OnClickListener {
 
@@ -33,8 +34,6 @@ public class AddNote extends AppCompatActivity implements View.OnClickListener {
         dbWrite =db.getWritableDatabase();
 
         adapter = new SimpleCursorAdapter(this,R.layout.note_list_cell,null,new String[]{"time","event"},new int[]{R.id.tv1,R.id.tv2});
-
-
         btnAdd.setOnClickListener(this);
     }
 
@@ -47,7 +46,7 @@ public class AddNote extends AppCompatActivity implements View.OnClickListener {
         cv.put("enent",edEvent.getText().toString());
 
         dbWrite.insert("notepad",null,cv);
-
+        Toast.makeText(AddNote.this,"添加成功",Toast.LENGTH_LONG).show();
         refreshListView();
 
     }

@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SimpleCursorAdapter;
 import android.support.v7.widget.Toolbar;
+import android.widget.Toast;
 
 public class TopBarActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -50,17 +51,15 @@ public class TopBarActivity extends AppCompatActivity implements View.OnClickLis
 
         btnAdd.setOnClickListener(this);
 
-
     }
 
     @Override
     public void onClick(View v) {
         ContentValues cv = new ContentValues();
         cv.put("time",edTime.getText().toString());
-        cv.put("enent",edEvent.getText().toString());
-
+        cv.put("event",edEvent.getText().toString());
         dbWrite.insert("notepad",null,cv);
-
+        Toast.makeText(TopBarActivity.this,"添加成功",Toast.LENGTH_LONG).show();
         refreshListView();
 
     }
@@ -68,7 +67,6 @@ public class TopBarActivity extends AppCompatActivity implements View.OnClickLis
     private void refreshListView(){
         Cursor c = dbRead.query("notepad",null,null,null, null,null,null);
         adapter.changeCursor(c);
-
 
     }
 }

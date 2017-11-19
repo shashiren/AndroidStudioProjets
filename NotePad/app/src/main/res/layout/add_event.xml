@@ -9,58 +9,54 @@
     <TextView
         android:id="@+id/tv1"
         android:layout_width="wrap_content"
-        android:layout_height="20dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:text="提醒时间："
-        app:layout_constraintEnd_toStartOf="@+id/edt1"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/noteTime"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="26dp"
+        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
 
     <TextView
         android:id="@+id/tv2"
         android:layout_width="wrap_content"
-        android:layout_height="20dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:text="事件内容："
-        app:layout_constraintEnd_toStartOf="@+id/edt2"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:text="@string/event"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="94dp"
+        app:layout_constraintTop_toBottomOf="@+id/tv1"
         tools:ignore="MissingConstraints" />
 
     <EditText
         android:id="@+id/edt1"
         android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:layout_marginTop="8dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:text=""
+        app:layout_constraintStart_toEndOf="@+id/tv1"
         app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="85dp"
         tools:ignore="MissingConstraints" />
 
     <EditText
         android:id="@+id/edt2"
         android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:layout_marginTop="20dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:text=""
         app:layout_constraintTop_toBottomOf="@+id/edt1"
-        tools:layout_editor_absoluteX="85dp"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="70dp" />
 
     <Button
         android:id="@+id/btn1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="添加"
+        android:layout_marginTop="16dp"
+        android:text="@string/Add"
         app:layout_constraintTop_toBottomOf="@+id/edt2"
-        tools:layout_editor_absoluteX="292dp"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="194dp" />
 </android.support.constraint.ConstraintLayout>

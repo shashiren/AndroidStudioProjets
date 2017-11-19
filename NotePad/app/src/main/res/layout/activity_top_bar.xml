@@ -6,6 +6,18 @@
     android:layout_height="match_parent"
     tools:layout_editor_absoluteY="25dp">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorAccent"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        />
+
+
     <TextView
         android:id="@+id/tv1"
         android:layout_width="wrap_content"
@@ -14,9 +26,10 @@
         android:layout_marginStart="8dp"
         android:text="提醒时间："
         app:layout_constraintEnd_toStartOf="@+id/edt1"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="26dp"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteY="92dp" />
 
     <TextView
         android:id="@+id/tv2"
@@ -26,21 +39,22 @@
         android:layout_marginStart="8dp"
         android:text="事件内容："
         app:layout_constraintEnd_toStartOf="@+id/edt2"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="94dp"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteY="162dp" />
 
     <EditText
         android:id="@+id/edt1"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="20dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:text=""
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="85dp"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintTop_toBottomOf="@+id/my_toolbar"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="94dp" />
 
     <EditText
         android:id="@+id/edt2"
@@ -51,16 +65,18 @@
         android:inputType="textPersonName"
         android:text=""
         app:layout_constraintTop_toBottomOf="@+id/edt1"
-        tools:layout_editor_absoluteX="85dp"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="94dp" />
 
     <Button
         android:id="@+id/btn1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="16dp"
         android:text="添加"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edt2"
-        tools:layout_editor_absoluteX="292dp"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints"
+        android:layout_marginRight="8dp" />
 </android.support.constraint.ConstraintLayout>

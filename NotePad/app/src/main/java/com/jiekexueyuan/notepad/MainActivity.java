@@ -1,13 +1,17 @@
 package com.jiekexueyuan.notepad;
 
+import android.content.ClipData;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -22,6 +26,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private Db db;
     private SQLiteDatabase dbRead,dbWrite;
     private SimpleCursorAdapter adapter;
+    private ClipData.Item item;
 
 
 
@@ -40,15 +45,20 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         dbRead = db.getReadableDatabase();
         dbWrite =db.getWritableDatabase();
         adapter = new SimpleCursorAdapter(this,R.layout.note_list_cell,null,new String[]{"time","event"},new int[]{R.id.tv1,R.id.tv2});
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                return false;
-            }
-        });
+        listView.setAdapter(adapter);
+        listView.setOnItemLongClickListener(this);
         refreshListView();
 
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu,menu);
+//        menu.add("添加事件");
+
+
+        return true;
     }
 
     @Override
@@ -56,13 +66,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         switch (item.getItemId()) {
 
-            case R.id.media_route_menu_item:
+            case R.id.addEvent:
                 Intent intent = new Intent(MainActivity.this,AddNote.class);
                 startActivity(intent);
-                fileList();
+//                finish();
                 return true;
-
             default:
+
                 return super.onOptionsItemSelected(item);
         }
 
@@ -73,15 +83,16 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         Cursor c = dbRead.query("notepad",null,null,null, null,null,null);
         adapter.changeCursor(c);
 
-
+        while (c.moveToNext()) {
+            String time = c.getString(c.getColumnIndex("time"));
+            String event = c.getString(c.getColumnIndex("event"));
+            System.out.println(String.format("time=%s,event=%s",time,event));
+        }
     }
 
 
     @Override
-    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-
-        final Cursor cursor = adapter.getCursor();
-        cursor.moveToPosition(position);
+    public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
 
         AlertDialog.Builder builder1 = new AlertDialog.Builder(MainActivity.this);
         builder1.setTitle("系统提示!");
@@ -97,7 +108,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
-
+                final Cursor cursor = adapter.getCursor();
+                cursor.moveToPosition(position);
                 int itemId = cursor.getInt(cursor.getColumnIndex("_id"));
                 dbWrite.delete("notepad","_id=?",new String[]{itemId+""});
                 refreshListView();
