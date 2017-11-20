@@ -3,14 +3,14 @@ package com.jiekexueyuan.notepad;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SimpleCursorAdapter;
-import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 
 public class TopBarActivity extends AppCompatActivity implements View.OnClickListener {
@@ -38,6 +38,7 @@ public class TopBarActivity extends AppCompatActivity implements View.OnClickLis
 
         // Enable the Up button
         ab.setDisplayHomeAsUpEnabled(true);
+        ab.setDisplayShowHomeEnabled(true);
 
         edTime = findViewById(R.id.edt1);
         edEvent = findViewById(R.id.edt2);
@@ -60,9 +61,10 @@ public class TopBarActivity extends AppCompatActivity implements View.OnClickLis
         cv.put("event",edEvent.getText().toString());
         dbWrite.insert("notepad",null,cv);
         Toast.makeText(TopBarActivity.this,"添加成功",Toast.LENGTH_LONG).show();
-        refreshListView();
+//        refreshListView();
 
     }
+
 
     private void refreshListView(){
         Cursor c = dbRead.query("notepad",null,null,null, null,null,null);

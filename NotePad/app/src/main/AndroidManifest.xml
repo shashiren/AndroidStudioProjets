@@ -19,7 +19,7 @@
         </activity>
          <activity
          android:name=".TopBarActivity"
-         android:label="@string/mr_button_content_description"
+         android:label="@string/addEvent"
          android:parentActivityName=".MainActivity"
          >
 

@@ -3,5 +3,7 @@
     <string name="addEvent">添加事件</string>
     <string name="noteTime">提醒时间：</string>
     <string name="event">事件内容：</string>
+    <string name="Reminder_time">提醒时间：</string>
+    <string name="Event_content">事件内容：</string>
     <string name="Add">添加</string>
 </resources>

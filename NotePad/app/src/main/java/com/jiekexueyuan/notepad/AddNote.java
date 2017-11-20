@@ -3,11 +3,12 @@ package com.jiekexueyuan.notepad;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
@@ -19,6 +20,7 @@ public class AddNote extends AppCompatActivity implements View.OnClickListener {
     private Db db;
     private SQLiteDatabase dbRead,dbWrite;
     private SimpleCursorAdapter adapter;
+    private ListView listView;
 
 
     @Override
@@ -29,12 +31,14 @@ public class AddNote extends AppCompatActivity implements View.OnClickListener {
         edTime = findViewById(R.id.edt1);
         edEvent = findViewById(R.id.edt2);
         btnAdd = findViewById(R.id.btn1);
+        listView = findViewById(R.id.lv);
+
         db = new Db(this);
         dbRead = db.getReadableDatabase();
         dbWrite =db.getWritableDatabase();
-
-        adapter = new SimpleCursorAdapter(this,R.layout.note_list_cell,null,new String[]{"time","event"},new int[]{R.id.tv1,R.id.tv2});
         btnAdd.setOnClickListener(this);
+//        adapter = new SimpleCursorAdapter(this,R.layout.note_list_cell,null,new String[]{"time","event"},new int[]{R.id.tv1,R.id.tv2});
+//        listView.setAdapter(adapter);
     }
 
 
@@ -43,11 +47,12 @@ public class AddNote extends AppCompatActivity implements View.OnClickListener {
 
         ContentValues cv = new ContentValues();
         cv.put("time",edTime.getText().toString());
-        cv.put("enent",edEvent.getText().toString());
+        cv.put("event",edEvent.getText().toString());
 
         dbWrite.insert("notepad",null,cv);
         Toast.makeText(AddNote.this,"添加成功",Toast.LENGTH_LONG).show();
-        refreshListView();
+
+//        refreshListView();
 
     }
 

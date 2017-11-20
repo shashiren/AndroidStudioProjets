@@ -4,7 +4,6 @@
     <item
         android:id="@+id/addEvent"
         android:icon="@drawable/ic_audiotrack_dark"
-        android:title="@string/addEvent">
-    </item>
+        android:title="@string/addEvent"></item>
 
 </menu>

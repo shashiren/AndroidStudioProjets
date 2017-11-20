@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -17,6 +16,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemLongClickListener {
@@ -27,6 +27,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private SQLiteDatabase dbRead,dbWrite;
     private SimpleCursorAdapter adapter;
     private ClipData.Item item;
+    private TextView textView1;
+    private TextView textView2;
 
 
 
@@ -39,6 +41,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
 
+        textView1 = findViewById(R.id.tv1);
+        textView2 = findViewById(R.id.tv2);
         listView = findViewById(R.id.lv);
 
         db = new Db(this);
@@ -67,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         switch (item.getItemId()) {
 
             case R.id.addEvent:
-                Intent intent = new Intent(MainActivity.this,AddNote.class);
+                Intent intent = new Intent(MainActivity.this,TopBarActivity.class);
                 startActivity(intent);
 //                finish();
                 return true;
@@ -76,18 +80,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 return super.onOptionsItemSelected(item);
         }
 
-//        return super.onOptionsItemSelected(item);
     }
 
     private void refreshListView(){
         Cursor c = dbRead.query("notepad",null,null,null, null,null,null);
         adapter.changeCursor(c);
 
-        while (c.moveToNext()) {
-            String time = c.getString(c.getColumnIndex("time"));
-            String event = c.getString(c.getColumnIndex("event"));
-            System.out.println(String.format("time=%s,event=%s",time,event));
-        }
     }
 
 
