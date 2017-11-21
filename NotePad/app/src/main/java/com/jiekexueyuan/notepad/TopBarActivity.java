@@ -1,6 +1,9 @@
 package com.jiekexueyuan.notepad;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -13,6 +16,8 @@ import android.widget.EditText;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
+import java.util.Calendar;
+
 public class TopBarActivity extends AppCompatActivity implements View.OnClickListener {
 
 
@@ -21,6 +26,7 @@ public class TopBarActivity extends AppCompatActivity implements View.OnClickLis
     private Button btnAdd;
     private Db db;
     private SQLiteDatabase dbRead,dbWrite;
+    private String event;
     private SimpleCursorAdapter adapter;
 
     @Override
@@ -47,7 +53,7 @@ public class TopBarActivity extends AppCompatActivity implements View.OnClickLis
         dbRead = db.getReadableDatabase();
         dbWrite =db.getWritableDatabase();
 
-        adapter = new SimpleCursorAdapter(this,R.layout.note_list_cell,null,new String[]{"time","event"},new int[]{R.id.tv1,R.id.tv2});
+//        adapter = new SimpleCursorAdapter(this,R.layout.note_list_cell,null,new String[]{"time","event"},new int[]{R.id.tv1,R.id.tv2});
 
 
         btnAdd.setOnClickListener(this);
@@ -61,10 +67,24 @@ public class TopBarActivity extends AppCompatActivity implements View.OnClickLis
         cv.put("event",edEvent.getText().toString());
         dbWrite.insert("notepad",null,cv);
         Toast.makeText(TopBarActivity.this,"添加成功",Toast.LENGTH_LONG).show();
+        setReminder(true);
 //        refreshListView();
 
     }
 
+    private void setReminder(boolean b){
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        Intent intent = new Intent(this,MyReceiver.class);
+        intent.putExtra(event,edEvent.getText().toString());
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(TopBarActivity.this,0,intent,0);
+        if (b){
+            Calendar calendar = Calendar.getInstance();
+            alarmManager.set(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),pendingIntent);
+        }
+        else {
+            alarmManager.cancel(pendingIntent);
+        }
+    }
 
     private void refreshListView(){
         Cursor c = dbRead.query("notepad",null,null,null, null,null,null);
