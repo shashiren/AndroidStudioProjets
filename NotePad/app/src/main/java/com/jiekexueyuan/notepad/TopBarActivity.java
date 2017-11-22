@@ -75,7 +75,7 @@ public class TopBarActivity extends AppCompatActivity implements View.OnClickLis
     private void setReminder(boolean b){
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         Intent intent = new Intent(this,MyReceiver.class);
-        intent.putExtra(event,edEvent.getText().toString());
+        intent.putExtra("event",edEvent.getText().toString()+"");
         PendingIntent pendingIntent = PendingIntent.getBroadcast(TopBarActivity.this,0,intent,0);
         if (b){
             Calendar calendar = Calendar.getInstance();
