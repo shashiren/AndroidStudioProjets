@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -17,6 +18,7 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
 import java.util.Calendar;
+import java.util.TimeZone;
 
 public class TopBarActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -68,27 +70,48 @@ public class TopBarActivity extends AppCompatActivity implements View.OnClickLis
         dbWrite.insert("notepad",null,cv);
         Toast.makeText(TopBarActivity.this,"添加成功",Toast.LENGTH_LONG).show();
         setReminder(true);
-//        refreshListView();
 
     }
+
+    private int time;
 
     private void setReminder(boolean b){
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         Intent intent = new Intent(this,MyReceiver.class);
+        time = Integer.parseInt(edTime.getText().toString());
         intent.putExtra("event",edEvent.getText().toString()+"");
         PendingIntent pendingIntent = PendingIntent.getBroadcast(TopBarActivity.this,0,intent,0);
         if (b){
+//            获取系统当前时间
+            long firstTime = SystemClock.elapsedRealtime();
+//            返回从UTC1970年1月1日夜开始经过的毫秒数；
+            long systemTime = System.currentTimeMillis();
+
             Calendar calendar = Calendar.getInstance();
-            alarmManager.set(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),pendingIntent);
+            calendar.setTimeInMillis(System.currentTimeMillis());
+            calendar.setTimeZone(TimeZone.getTimeZone("GMT+8"));
+            calendar.set(Calendar.MINUTE,0);
+            calendar.set(Calendar.HOUR_OF_DAY,time);
+            calendar.set(Calendar.SECOND,0);
+            calendar.set(Calendar.MILLISECOND,0);
+//            计算当前时间
+            long selectTime = calendar.getTimeInMillis();
+//            如果当前的时间大于设置时间，那么就从第二天的设定时间开始
+            if(systemTime > selectTime){
+                calendar.add(Calendar.DAY_OF_MONTH,1);
+                selectTime = calendar.getTimeInMillis();
+            }
+//            计算现在时间到设定时间的时间差
+            long diffTime = selectTime - systemTime;
+//            系统当前时间+时间差
+            long my_Time = firstTime + diffTime;
+//            alarmManager.set(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),pendingIntent);
+            alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,my_Time,AlarmManager.INTERVAL_DAY,pendingIntent);
         }
         else {
             alarmManager.cancel(pendingIntent);
         }
     }
 
-    private void refreshListView(){
-        Cursor c = dbRead.query("notepad",null,null,null, null,null,null);
-        adapter.changeCursor(c);
 
-    }
 }
