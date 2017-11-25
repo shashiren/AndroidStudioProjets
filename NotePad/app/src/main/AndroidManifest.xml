@@ -27,7 +27,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
-        <activity android:name=".AddNote" />
         <!--  -->
         <!-- <activity android:name=".TopBarActivity"></activity> -->
         <activity android:name=".MyAlarm" />

@@ -23,10 +23,6 @@ public class MyAlarm extends AppCompatActivity {
         Intent i = getIntent();
         notification = i.getStringExtra("event");
 
-//        final NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-//        Notification n = new Notification();
-//        n.sound = Uri.withAppendedPath(MediaStore.Audio.Media.INTERNAL_CONTENT_URI,"20");
-//        nm.notify(NOTIFICATION_ID,n);
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.drawable.ic_launcher_foreground)
