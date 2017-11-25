@@ -55,9 +55,6 @@ public class TopBarActivity extends AppCompatActivity implements View.OnClickLis
         dbRead = db.getReadableDatabase();
         dbWrite =db.getWritableDatabase();
 
-//        adapter = new SimpleCursorAdapter(this,R.layout.note_list_cell,null,new String[]{"time","event"},new int[]{R.id.tv1,R.id.tv2});
-
-
         btnAdd.setOnClickListener(this);
 
     }
@@ -108,11 +105,11 @@ public class TopBarActivity extends AppCompatActivity implements View.OnClickLis
 //            alarmManager.set(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),pendingIntent);
 //            alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,my_Time,AlarmManager.INTERVAL_DAY,pendingIntent);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                alarmManager.setExactAndAllowWhileIdle(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime(), pendingIntent);
+                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, selectTime, pendingIntent);
             } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                alarmManager.setExact(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime(), pendingIntent);
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, selectTime, pendingIntent);
             } else {
-                alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime(), AlarmManager.INTERVAL_DAY, pendingIntent);
+                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, selectTime, AlarmManager.INTERVAL_DAY, pendingIntent);
             }
 
         }
