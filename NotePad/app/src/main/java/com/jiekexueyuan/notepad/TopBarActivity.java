@@ -3,6 +3,7 @@ package com.jiekexueyuan.notepad;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
@@ -14,7 +15,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
 import java.util.Calendar;
@@ -26,10 +26,13 @@ public class TopBarActivity extends AppCompatActivity implements View.OnClickLis
     private EditText edTime;
     private EditText edEvent;
     private Button btnAdd;
+    private DbUsage dbUsage1;
     private Db db;
     private SQLiteDatabase dbRead,dbWrite;
     private String event;
-    private SimpleCursorAdapter adapter;
+    private MainActivity mainActivity;
+    private Context context;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,13 +51,10 @@ public class TopBarActivity extends AppCompatActivity implements View.OnClickLis
         ab.setDisplayHomeAsUpEnabled(true);
         ab.setDisplayShowHomeEnabled(true);
 
+        dbUsage1 = new DbUsage();
         edTime = findViewById(R.id.edt1);
         edEvent = findViewById(R.id.edt2);
         btnAdd = findViewById(R.id.btn1);
-        db = new Db(this);
-        dbRead = db.getReadableDatabase();
-        dbWrite =db.getWritableDatabase();
-
         btnAdd.setOnClickListener(this);
 
     }
@@ -64,11 +64,16 @@ public class TopBarActivity extends AppCompatActivity implements View.OnClickLis
         ContentValues cv = new ContentValues();
         cv.put("time",edTime.getText().toString());
         cv.put("event",edEvent.getText().toString());
-        dbWrite.insert("notepad",null,cv);
+        dbUsage1.dbWriteNotePad(cv);
+//        dbWrite.insert("notepad",null,cv);
+        dbUsage1.dbReadNotePad();
         Toast.makeText(TopBarActivity.this,"添加成功",Toast.LENGTH_LONG).show();
         setReminder(true);
 
     }
+//    public TopBarActivity(Context context,MainActivity mainActivity){
+//
+//    }
 
     private int time;
 
@@ -102,14 +107,13 @@ public class TopBarActivity extends AppCompatActivity implements View.OnClickLis
             long diffTime = selectTime - systemTime;
 //            系统当前时间+时间差
             long my_Time = firstTime + diffTime;
-//            alarmManager.set(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),pendingIntent);
-//            alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,my_Time,AlarmManager.INTERVAL_DAY,pendingIntent);
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, selectTime, pendingIntent);
+                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, diffTime, pendingIntent);
             } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                alarmManager.setExact(AlarmManager.RTC_WAKEUP, selectTime, pendingIntent);
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, diffTime, pendingIntent);
             } else {
-                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, selectTime, AlarmManager.INTERVAL_DAY, pendingIntent);
+                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, diffTime, AlarmManager.INTERVAL_DAY, pendingIntent);
             }
 
         }

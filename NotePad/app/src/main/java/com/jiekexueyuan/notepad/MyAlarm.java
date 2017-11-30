@@ -22,7 +22,6 @@ public class MyAlarm extends AppCompatActivity {
         setContentView(R.layout.activity_my_alarm);
         Intent i = getIntent();
         notification = i.getStringExtra("event");
-
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.drawable.ic_launcher_foreground)
@@ -30,7 +29,6 @@ public class MyAlarm extends AppCompatActivity {
                         .setContentText(notification);
 // Creates an explicit intent for an Activity in your app
         Intent resultIntent = new Intent(this, MainActivity.class);
-
 // The stack builder object will contain an artificial back stack for the
 // started Activity.
 // This ensures that navigating backward from the Activity leads out of
@@ -51,7 +49,6 @@ public class MyAlarm extends AppCompatActivity {
 // mId allows you to update the notification later on.
         int mId = 1;
         mNotificationManager.notify(mId, mBuilder.build());
-
         TextView tv = findViewById(R.id.tvNotification);
         tv.setText(notification);
         Button btnCancel =  findViewById(R.id.btnCancel);
