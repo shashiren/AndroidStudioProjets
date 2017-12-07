@@ -1,6 +1,8 @@
 package com.jiekexueyuan.notepad;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -9,6 +11,8 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 
 public class Db extends SQLiteOpenHelper {
+    private Cursor cursor;
+
         public Db(Context context) {
         super(context, "NotePad", null, 1);
     }
@@ -23,6 +27,23 @@ public class Db extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+
+    }
+
+    public Cursor dbRead(){
+        SQLiteDatabase db = getReadableDatabase();
+        cursor = db.query("notepad",null,null,null,null,null,null);
+        return cursor;
+    }
+
+    public void dbWrite(ContentValues contentValues){
+        SQLiteDatabase db = getWritableDatabase();
+        db.insert("notepad",null,contentValues);
+
+    }
+    public void dbDelete(int itemId){
+        SQLiteDatabase db = getWritableDatabase();
+        db.delete("notepad","_id=?",new String[]{itemId+""});
 
     }
 }

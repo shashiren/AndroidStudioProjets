@@ -9,7 +9,9 @@ public class MyReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.setClass(context,MyAlarm.class);
+        String string = intent.getStringExtra("event");
         context.startActivity(intent);
-        System.out.println("接受到了消息");
+        System.out.println("接受到了消息:"+string);
     }
+
 }

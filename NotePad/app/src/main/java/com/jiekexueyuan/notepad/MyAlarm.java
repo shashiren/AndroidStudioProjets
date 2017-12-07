@@ -24,7 +24,7 @@ public class MyAlarm extends AppCompatActivity {
         notification = i.getStringExtra("event");
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.drawable.ic_launcher_foreground)
+                        .setSmallIcon(R.mipmap.ic_launcher)
                         .setContentTitle("My Notification")
                         .setContentText(notification);
 // Creates an explicit intent for an Activity in your app

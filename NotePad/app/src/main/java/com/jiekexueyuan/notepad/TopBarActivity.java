@@ -5,7 +5,6 @@ import android.app.PendingIntent;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -26,11 +25,8 @@ public class TopBarActivity extends AppCompatActivity implements View.OnClickLis
     private EditText edTime;
     private EditText edEvent;
     private Button btnAdd;
-    private DbUsage dbUsage1;
-    private Db db;
-    private SQLiteDatabase dbRead,dbWrite;
+//    private Db db;
     private String event;
-    private MainActivity mainActivity;
     private Context context;
 
 
@@ -51,7 +47,8 @@ public class TopBarActivity extends AppCompatActivity implements View.OnClickLis
         ab.setDisplayHomeAsUpEnabled(true);
         ab.setDisplayShowHomeEnabled(true);
 
-        dbUsage1 = new DbUsage();
+
+//        db = new Db(this);
         edTime = findViewById(R.id.edt1);
         edEvent = findViewById(R.id.edt2);
         btnAdd = findViewById(R.id.btn1);
@@ -64,31 +61,33 @@ public class TopBarActivity extends AppCompatActivity implements View.OnClickLis
         ContentValues cv = new ContentValues();
         cv.put("time",edTime.getText().toString());
         cv.put("event",edEvent.getText().toString());
-        dbUsage1.dbWriteNotePad(cv);
-//        dbWrite.insert("notepad",null,cv);
-        dbUsage1.dbReadNotePad();
+//        db.dbWrite(cv);
+        MainActivity.getMainActivity().addNote(cv);
+        MainActivity.getMainActivity().refreshListView();
+
+        /*调用main方法的非静态方法*/
+
+//        mainActivity.refreshListView();
         Toast.makeText(TopBarActivity.this,"添加成功",Toast.LENGTH_LONG).show();
         setReminder(true);
 
     }
-//    public TopBarActivity(Context context,MainActivity mainActivity){
-//
-//    }
 
     private int time;
 
-    private void setReminder(boolean b){
+    public void setReminder(boolean b){
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         Intent intent = new Intent(this,MyReceiver.class);
         time = Integer.parseInt(edTime.getText().toString());
-        intent.putExtra("event",edEvent.getText().toString()+"");
+        event = edEvent.getText().toString();
+        intent.putExtra("event",event+"");
         PendingIntent pendingIntent = PendingIntent.getBroadcast(TopBarActivity.this,0,intent,0);
         if (b){
-//            获取系统当前时间
+
             long firstTime = SystemClock.elapsedRealtime();
 //            返回从UTC1970年1月1日夜开始经过的毫秒数；
             long systemTime = System.currentTimeMillis();
-
+//            获取系统当前时间
             Calendar calendar = Calendar.getInstance();
             calendar.setTimeInMillis(System.currentTimeMillis());
             calendar.setTimeZone(TimeZone.getTimeZone("GMT+8"));
@@ -113,7 +112,7 @@ public class TopBarActivity extends AppCompatActivity implements View.OnClickLis
             } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 alarmManager.setExact(AlarmManager.RTC_WAKEUP, diffTime, pendingIntent);
             } else {
-                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, diffTime, AlarmManager.INTERVAL_DAY, pendingIntent);
+                alarmManager.set(AlarmManager.RTC_WAKEUP, diffTime, pendingIntent);
             }
 
         }

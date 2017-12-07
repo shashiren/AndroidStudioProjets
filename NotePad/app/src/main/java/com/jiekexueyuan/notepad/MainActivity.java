@@ -1,9 +1,11 @@
 package com.jiekexueyuan.notepad;
 
 import android.content.ClipData;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -21,13 +23,13 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemLongClickListener {
 
     private ListView listView;
-//    private Db db;
-//    private SQLiteDatabase dbRead,dbWrite;
+    private Db db;
+    private SQLiteDatabase dbRead,dbWrite;
     private SimpleCursorAdapter adapter;
     private ClipData.Item item;
     private TextView textView1;
     private TextView textView2;
-    private DbUsage dbUsage;
+    private ContentValues cv1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,17 +42,25 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         textView1 = findViewById(R.id.tv1);
         textView2 = findViewById(R.id.tv2);
         listView = findViewById(R.id.lv);
-        dbUsage = new DbUsage();
 
 
-//        db = new Db(this);
-//        dbRead = db.getReadableDatabase();
-//        dbWrite = db.getWritableDatabase();
+
+        db = new Db(this);
         adapter = new SimpleCursorAdapter(this,R.layout.note_list_cell,null,new String[]{"time","event"},new int[]{R.id.tv1,R.id.tv2});
         listView.setAdapter(adapter);
-        dbUsage.dbReadNotePad();
+        refreshListView();
         listView.setOnItemLongClickListener(this);
     }
+    /*给其它类调用的关键*/
+    private static MainActivity mainActivity;
+    public MainActivity (){
+       mainActivity = this;
+    }
+    public static MainActivity getMainActivity(){
+        return mainActivity;
+    }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -74,11 +84,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
     }
 
-    public void refreshListView(Cursor cursor){
-
-//        dbUsage.dbReadNotePad(cursor);
+    public void refreshListView(){
+        Cursor c =  db.dbRead();
 //        Cursor c = dbRead.query("notepad",null,null,null, null,null,null);
-        adapter.changeCursor(cursor);
+        adapter.changeCursor(c);
+
+    }
+    public void addNote(ContentValues contentValues){
+        db.dbWrite(contentValues);
     }
 
     @Override
@@ -100,9 +113,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 final Cursor cursor = adapter.getCursor();
                 cursor.moveToPosition(position);
                 int itemId = cursor.getInt(cursor.getColumnIndex("_id"));
-                dbUsage.dbDeleteNotePad(itemId);
 //                dbWrite.delete("notepad","_id=?",new String[]{itemId+""});
-                dbUsage.dbReadNotePad();
+                db.dbDelete(itemId);
+                refreshListView();
                 Toast.makeText(MainActivity.this,"删除成功",Toast.LENGTH_LONG).show();
             }
         });
@@ -110,4 +123,3 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         return true;
     }
 }
-

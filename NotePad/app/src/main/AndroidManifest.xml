@@ -24,7 +24,7 @@
             android:label="@string/addEvent"
             android:parentActivityName=".MainActivity">
 
-            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <!--&lt;!&ndash; Parent activity meta-data to support 4.0 and lower &ndash;&gt;-->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
