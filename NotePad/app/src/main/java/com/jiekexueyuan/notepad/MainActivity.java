@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private TextView textView2;
     private ContentValues cv1;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -116,6 +117,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 //                dbWrite.delete("notepad","_id=?",new String[]{itemId+""});
                 db.dbDelete(itemId);
                 refreshListView();
+                TopBarActivity.getTopBarActivity().setReminder(false);
                 Toast.makeText(MainActivity.this,"删除成功",Toast.LENGTH_LONG).show();
             }
         });

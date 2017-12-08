@@ -72,6 +72,13 @@ public class TopBarActivity extends AppCompatActivity implements View.OnClickLis
         setReminder(true);
 
     }
+    private static TopBarActivity topBarActivity;
+    public TopBarActivity(){
+        topBarActivity = this;
+    }
+    public static TopBarActivity getTopBarActivity(){
+        return topBarActivity;
+    }
 
     private int time;
 
@@ -81,7 +88,8 @@ public class TopBarActivity extends AppCompatActivity implements View.OnClickLis
         time = Integer.parseInt(edTime.getText().toString());
         event = edEvent.getText().toString();
         intent.putExtra("event",event+"");
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(TopBarActivity.this,0,intent,0);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(TopBarActivity.this,0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+        System.out.println("这是发送的广播:"+event);
         if (b){
 
             long firstTime = SystemClock.elapsedRealtime();
