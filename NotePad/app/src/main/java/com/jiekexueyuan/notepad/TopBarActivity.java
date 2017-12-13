@@ -29,7 +29,6 @@ public class TopBarActivity extends AppCompatActivity implements View.OnClickLis
     private String event;
     private Context context;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,13 +46,10 @@ public class TopBarActivity extends AppCompatActivity implements View.OnClickLis
         ab.setDisplayHomeAsUpEnabled(true);
         ab.setDisplayShowHomeEnabled(true);
 
-
-//        db = new Db(this);
         edTime = findViewById(R.id.edt1);
         edEvent = findViewById(R.id.edt2);
         btnAdd = findViewById(R.id.btn1);
         btnAdd.setOnClickListener(this);
-
     }
 
     @Override
@@ -65,12 +61,8 @@ public class TopBarActivity extends AppCompatActivity implements View.OnClickLis
         MainActivity.getMainActivity().addNote(cv);
         MainActivity.getMainActivity().refreshListView();
 
-        /*调用main方法的非静态方法*/
-
-//        mainActivity.refreshListView();
         Toast.makeText(TopBarActivity.this,"添加成功",Toast.LENGTH_LONG).show();
         setReminder(true);
-
     }
     private static TopBarActivity topBarActivity;
     public TopBarActivity(){
@@ -97,7 +89,7 @@ public class TopBarActivity extends AppCompatActivity implements View.OnClickLis
             long systemTime = System.currentTimeMillis();
 //            获取系统当前时间
             Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(System.currentTimeMillis());
+//            calendar.setTimeInMillis(System.currentTimeMillis());
             calendar.setTimeZone(TimeZone.getTimeZone("GMT+8"));
             calendar.set(Calendar.MINUTE,0);
             calendar.set(Calendar.HOUR_OF_DAY,time);
@@ -113,21 +105,18 @@ public class TopBarActivity extends AppCompatActivity implements View.OnClickLis
 //            计算现在时间到设定时间的时间差
             long diffTime = selectTime - systemTime;
 //            系统当前时间+时间差
-            long my_Time = firstTime + diffTime;
+            long my_Time = systemTime + diffTime;
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, diffTime, pendingIntent);
+                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, selectTime, pendingIntent);
             } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                alarmManager.setExact(AlarmManager.RTC_WAKEUP, diffTime, pendingIntent);
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, selectTime, pendingIntent);
             } else {
-                alarmManager.set(AlarmManager.RTC_WAKEUP, diffTime, pendingIntent);
+                alarmManager.set(AlarmManager.RTC_WAKEUP, selectTime, pendingIntent);
             }
-
         }
         else {
             alarmManager.cancel(pendingIntent);
         }
     }
-
-
 }
