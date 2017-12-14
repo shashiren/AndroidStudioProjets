@@ -11,7 +11,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 
 public class Db extends SQLiteOpenHelper {
-    private Cursor cursor;
+    private Cursor mCursor;
 
         public Db(Context context) {
         super(context, "NotePad", null, 1);
@@ -32,18 +32,18 @@ public class Db extends SQLiteOpenHelper {
 
     public Cursor dbRead(){
         SQLiteDatabase db = getReadableDatabase();
-        cursor = db.query("notepad",null,null,null,null,null,null);
-        return cursor;
+        mCursor = db.query("notepad", null, null, null, null, null, null);
+        return mCursor;
     }
 
     public void dbWrite(ContentValues contentValues){
         SQLiteDatabase db = getWritableDatabase();
-        db.insert("notepad",null,contentValues);
+        db.insert("notepad", null, contentValues);
 
     }
     public void dbDelete(int itemId){
         SQLiteDatabase db = getWritableDatabase();
-        db.delete("notepad","_id=?",new String[]{itemId+""});
+        db.delete("notepad", "_id=?", new String[]{itemId+""});
 
     }
 }

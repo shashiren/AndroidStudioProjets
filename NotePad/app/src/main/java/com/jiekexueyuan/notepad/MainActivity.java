@@ -5,7 +5,6 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -22,14 +21,12 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemLongClickListener {
 
-    private ListView listView;
-    private Db db;
-    private SQLiteDatabase dbRead,dbWrite;
-    private SimpleCursorAdapter adapter;
-    private ClipData.Item item;
-    private TextView textView1;
-    private TextView textView2;
-    private ContentValues cv1;
+    private ListView mlistView;
+    private Db mDb;
+    private SimpleCursorAdapter mAdapter;
+    private ClipData.Item mItem;
+    private TextView mTextView1;
+    private TextView mTextView2;
 
 
     @Override
@@ -40,17 +37,17 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
 
-        textView1 = findViewById(R.id.tv1);
-        textView2 = findViewById(R.id.tv2);
-        listView = findViewById(R.id.lv);
+        mTextView1 = findViewById(R.id.tv1);
+        mTextView2 = findViewById(R.id.tv2);
+        mlistView = findViewById(R.id.lv);
 
 
 
-        db = new Db(this);
-        adapter = new SimpleCursorAdapter(this,R.layout.note_list_cell,null,new String[]{"time","event"},new int[]{R.id.tv1,R.id.tv2});
-        listView.setAdapter(adapter);
+        mDb = new Db(this);
+        mAdapter = new SimpleCursorAdapter(this, R.layout.note_list_cell, null, new String[]{"time", "event"}, new int[]{R.id.tv1,R.id.tv2});
+        mlistView.setAdapter(mAdapter);
         refreshListView();
-        listView.setOnItemLongClickListener(this);
+        mlistView.setOnItemLongClickListener(this);
     }
     /*给其它类调用的关键*/
     private static MainActivity mainActivity;
@@ -77,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         switch (item.getItemId()) {
 
             case R.id.addEvent:
-                Intent intent = new Intent(MainActivity.this,TopBarActivity.class);
+                Intent intent = new Intent(MainActivity.this, TopBarActivity.class);
                 startActivity(intent);
                 return true;
             default:
@@ -86,13 +83,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     public void refreshListView(){
-        Cursor c =  db.dbRead();
+        Cursor c =  mDb.dbRead();
 //        Cursor c = dbRead.query("notepad",null,null,null, null,null,null);
-        adapter.changeCursor(c);
+        mAdapter.changeCursor(c);
 
     }
     public void addNote(ContentValues contentValues){
-        db.dbWrite(contentValues);
+        mDb.dbWrite(contentValues);
     }
 
     @Override
@@ -111,11 +108,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
-                final Cursor cursor = adapter.getCursor();
+                final Cursor cursor = mAdapter.getCursor();
                 cursor.moveToPosition(position);
                 int itemId = cursor.getInt(cursor.getColumnIndex("_id"));
 //                dbWrite.delete("notepad","_id=?",new String[]{itemId+""});
-                db.dbDelete(itemId);
+                mDb.dbDelete(itemId);
                 refreshListView();
                 TopBarActivity.getTopBarActivity().setReminder(false);
                 Toast.makeText(MainActivity.this,"删除成功",Toast.LENGTH_LONG).show();
